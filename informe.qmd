@@ -1,0 +1,188 @@
+---
+title: "Trabajo Final 9219: \\ Estado de México"
+author: 
+  - "Sofía Ángeles Rojo " 
+  - "Victor Hugo Sánchez Gayosso"
+format: pdf
+editor: visual
+---
+
+## Introducción
+
+El Estado de México, México o por su acrónimo Edomex, es uno de los 32 estados que conforman a los Estados Unidos Mexicanos. Con una extensión de 22 357 $km^2$ divididos en 125 municipios y aun siendo la séptima entidad menos extensa, cuenta con la población más grande de todo el país; condición que se ha mantenido a lo largo de los años. Debido a su cercania con la capital, el Estado de México recibe uno de los mayores flujos migratorios del país; ya sea por personas que buscan acercarse a la CDMX en búsqueda de mejores oportunidades o por el contrario, personas que habitaban en la CDMX y cambiaron su residencia permanente al Estado de México.
+
+```{r,message=FALSE, warning=FALSE}
+##Lectura del primer objeto de la web
+# 1. Remover los objetos
+rm(list = ls())
+
+# 2. Instalar paquetes y cargar paquetes
+#install.packages("data.table", dependencies = T)
+#install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("tidyr")
+#install.packages("kableExtra", dependencies = T)
+#install.packages("lubridate", dependencies = T)
+library(data.table)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(kableExtra)
+library(lubridate)
+
+# 3. Descargar tablas de datos
+#pop <- fread("https://repodatos.atdt.gob.mx/CONAPO/proyecciones/00_Pob_Mitad_1950_2070.csv")
+pop <-fread("data/00_Pob_Mitad_1950_2070.csv")
+mort <- fread("https://population.un.org/wpp/assets/Excel%20Files/1_Indicator%20(Standard)/CSV_FILES/WPP2024_DeathsBySingleAgeSex_Medium_1950-2023.csv.gz")
+#apv <- fread("https://population.un.org/wpp/assets/Excel%20Files/1_Indicator%20(Standard)/CSV_FILES/WPP2024_PopulationBySingleAgeSex_Medium_1950-2023.csv.gz")
+
+# 4. Exploración de la tabla de población
+table(pop$ENTIDAD)
+table(pop$CVE_GEO)
+table(pop$ANIO)
+
+names(pop)
+sum(pop$POBLACION)
+```
+
+\newpage
+
+## Pirámides poblacionales
+
+A continuación haremos un breve análisis de la pirámide poblacional correspondiente al Estado de México, compararemos las proyecciones poblacionales del año en curso 2026 y las proyecciones dentro de 30 años.
+
+```{r, echo=FALSE, fig.height=5, fig.width=8}
+#Guardamos los datos necesarios en una variable
+edomx <- pop[pop$ENTIDAD == "México" & ANIO == "2026", .(SEXO, EDAD, POBLACION)]
+#Reorganizamos los datos
+edomxp <- edomx %>%
+  mutate(POBLACION = ifelse(SEXO == "Hombres", -POBLACION, POBLACION))
+#Creamos la pirámide
+ggplot(edomxp, aes(x = EDAD, y = POBLACION, fill = SEXO)) +
+  geom_bar(stat = "identity", position = "identity") +
+  coord_flip() +
+  scale_y_continuous(
+    labels = abs,  
+    breaks = seq(-150000, 150000, 100000),
+    name = "Población"
+  ) +
+  scale_fill_manual(values = c("Hombres" = "steelblue", "Mujeres" = "pink")) +
+  labs(
+    title = "Pirámide Poblacional
+    Estado de México (2026)",
+    x = "Edades",
+    fill = "Sexo",
+    caption = "CONAPO"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+    axis.text.x = element_text(angle = 0, hjust = 0.5)
+  )
+```
+
+En esta primer pirámide podemos ver como el grueso de la población se encuentra entre los 15 y 30 años, con una leve superioridad de la población de hombres en ese rango y que se mantiene en edades menores. De forma opuesta, en todas las edades superiores a los 30 años la población de mujeres es superior. Finalmente cabe recalcar que se puede ver una clara disminución del aumento de las poblaciones menores a 15 años, por lo que nuestra pirámide empieza a tender a una forma rectangular.
+
+```{r, echo=FALSE, fig.height=5, fig.width=8}
+#Guardamos los datos necesarios en una variable
+edomx <- pop[pop$ENTIDAD == "México" & ANIO == "2070", .(SEXO, EDAD, POBLACION)]
+#Reorganizamos los datos
+edomxp <- edomx %>%
+  mutate(POBLACION = ifelse(SEXO == "Hombres", -POBLACION, POBLACION))
+#Creamos la pirámide
+ggplot(edomxp, aes(x = EDAD, y = POBLACION, fill = SEXO)) +
+  geom_bar(stat = "identity", position = "identity") +
+  coord_flip() +
+  scale_y_continuous(
+    labels = abs,  
+    breaks = seq(-120000, 120000, 80000),
+    name = "Población"
+  ) +
+  scale_fill_manual(values = c("Hombres" = "steelblue", "Mujeres" = "pink")) +
+  labs(
+    title = "Pirámide Poblacional
+    Estado de México (2070)",
+    x = "Edades",
+    fill = "Sexo",
+    caption = "CONAPO"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+    axis.text.x = element_text(angle = 0, hjust = 0.5)
+  )
+```
+
+En esta segunda pirámide podemos ver como el grueso de la población se encuentra entre los 45 y 75 años (que es el mismo observado en la pirámide anterior), con una superioridad de la población de mujeres, misma que es perceptible a partir del rango de 30 años y crece para edades superiores. De forma opuesta, en todas las edades inferiores a los 30 años la población de mujeres es inferior. Finalmente aqui ya es completamente visible la población joven ha empezado a disminuir, por lo que nuestra pirámide se rectangularizó.
+
+En conjunto podemos ver un par de cosas; la población en general disminuyo pasando de tener las edades con poblaciones mayores al rededor de los 150,000 habitantes para 44 años después rondar los 120,000 habitantes. Por otro lado podemos ver que al pasar los años la población de hombres baja significativamente en comparación a la de mujeres, a pesar de que en edades jóvenes la población de hombres es mayor.
+
+## Lectura de la tabla del mismo proyecto
+
+```{r}
+(deaths <-fread("data/Mx_ARG_GUA.csv"))
+kable(deaths,caption = "Muertes de Argentina y Guatemala")
+```
+
+## Escritura de funciones
+
+###Media ponderada
+
+```{r}
+weight_mean <- function(x, w = rep(1/length(x),length(x))){
+  x_mean <- sum(x*w)/sum(w)
+  return(x_mean)
+}
+
+#Ejemplo
+weight_mean(c(10,40), c(0.3,0.7))
+
+```
+
+###Creciemiento exponencial
+
+```{r}
+expo <- function(K_0, K_T, t_0, t_T, t){
+
+dt <- decimal_date(as.Date(t_T)) - decimal_date(as.Date(t_0))
+  r <- log(K_T/K_0)/dt
+  h <- t - decimal_date(as.Date(t_0))
+  K_h <- K_0 * exp(r*h)  
+  return(K_h)
+}
+ 
+ 
+cre_exp <- expo( K_0=16594825, K_T=17723173, 
+                 t_0="2010-06-25", t_T="2020-03-15",     
+                 t=seq(2020.5, 2100.5, 1)
+)
+ 
+# Gráfica
+data.frame(Año = c(decimal_date(as.Date("2010-06-25")), 
+                   decimal_date(as.Date("2020-03-15")), seq(2020.5, 2100.5, 1)),
+           K_t   = c(112336538, 126014024, cre_exp)) %>% 
+  ggplot(aes(Año, K_t)) + 
+  geom_line() + 
+  geom_point()
+
+```
+
+```{r}
+deaths <- deaths %>%
+  mutate(m_x = D/N)
+plot(deaths[location == "Argentina", x],
+     log(deaths[location == "Argentina", m_x]))
+
+#Tasa bruta de mortalidad
+deaths %>%
+  group_by(location) %>%
+  summarize(weight_mean(m_x, x/sum(x)))
+
+```
+
+```{r}
+
+
+```
