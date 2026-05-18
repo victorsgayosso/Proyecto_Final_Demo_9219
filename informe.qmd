@@ -116,7 +116,7 @@ Para la creación de las tablas de vida usaremos como base el siguiente diagrama
 
 
 ## Expresiones matemáticas
-Durante el desarrollo de este documento se usaron las siguientes formulas para el desarrollo del mismo:
+Durante el desarrollo de este documento se usaron las siguientes formulas para los calculos necesarios.
 Asumiremos que las tasas especificas por edad son iguales a las tasas por periodo:
 $$_nm_x = _nM_x = \frac{_nD_x}{_nK_x}$$
 Para edades de 0 a 1 usaremos la relación de Coule y Demeny correspondiente:
