@@ -9,7 +9,7 @@ editor: visual
 
 ## Introducción
 
-El Estado de México, México o por su acrónimo Edomex, es uno de los 32 estados que conforman a los Estados Unidos Mexicanos. Con una extensión de 22 357 $km^2$ divididos en 125 municipios y aun siendo la séptima entidad menos extensa, cuenta con la población más grande de todo el país; condición que se ha mantenido a lo largo de los años. Debido a su cercanía con la capital, el Estado de México recibe uno de los mayores flujos migratorios del país; ya sea por personas que buscan acercarse a la CDMX con el fin de encontrar mejores oportunidades o por el contrario, personas que habitaban en la CDMX y cambiaron su residencia permanente al Estado de México. En este documento haremos un análisis sobre el impacto de la pandemia de COVID-19 a través de las tablas de vida de los años 2010, 2019 y 2021. Haremos hincapié en los puntos antes mencionados y además veremos cómo fue afectada la esperanza de vida para tener un contexto de lo que sucedío realmente. Los datos poblacionales son recopilados de la CONAPO y los datos sobre defunciones del INEGI.
+El Estado de México, México o por su acrónimo Edomex, es uno de los 32 estados que conforman a los Estados Unidos Mexicanos. Con una extensión de 22 357 $km^2$ divididos en 125 municipios y aun siendo la séptima entidad menos extensa, cuenta con la población más grande de todo el país; condición que se ha mantenido a lo largo de los años. Debido a su cercania con la capital, el Estado de México recibe uno de los mayores flujos migratorios del país; ya sea por personas que buscan acercarse a la CDMX con el fin de encontrar mejores oportunidades o por el contrario, personas que habitaban en la CDMX y cambiaron su residencia permanente al Estado de México. En este documento haremos un análisis sobre el impacto de la pandemía de COVID-19 a traves de las tablas de vida de los años 2010, 2019 y 2021. Haremos hincapié en los puntos antes mencionados y además veremos como fue afectada la esperanza de vida para tener un contexto de lo que sucedío realmente. Los datos poblacionales son recopilados de la CONAPO y los datos sobre defunciones del INEGI.
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 ##Lectura del primer objeto de la web
@@ -39,7 +39,7 @@ library(stringr)
 pop <-fread("data/00_Pob_Mitad_1950_2070.csv")
 ```
 
-Comenzaremos haciendo una breve revisión de las pirámides poblacionales, comparando las proyecciones poblacionales del año en curso 2026 y las proyecciones correspondientes al 2070 para así tener un contexto inicial de cómo se comporta la población de nuestro territorio de estudio.
+Comenzaremos haciendo una breve revisión de las pirámides poblacionales, comparando las proyecciones poblacionales del año en curso 2026 y las proyecciones correspondientes al 2070 para así tener un contexto inicial de como se comporta la población de nuestro territorio de estudio.
 
 ```{r, echo=FALSE, fig.height=2.5, fig.width=4}
 #Guardamos los datos necesarios en una variable
@@ -105,9 +105,9 @@ ggplot(edomxp, aes(x = EDAD, y = POBLACION, fill = SEXO)) +
   )
 ```
 
-En esta segunda pirámide podemos ver como el grueso de la población se encuentra entre los 45 y 75 años (que es el mismo observado en la pirámide anterior), con una superioridad de la población de mujeres, misma que es perceptible a partir del rango de 30 años y crece para edades superiores. De forma opuesta, en todas las edades inferiores a los 30 años la población de mujeres es inferior. Finalmente aquí ya es completamente visible que la población joven ha empezado a disminuir, por lo que nuestra pirámide se rectangularizó.
+En esta segunda pirámide podemos ver como el grueso de la población se encuentra entre los 45 y 75 años (que es el mismo observado en la pirámide anterior), con una superioridad de la población de mujeres, misma que es perceptible a partir del rango de 30 años y crece para edades superiores. De forma opuesta, en todas las edades inferiores a los 30 años la población de mujeres es inferior. Finalmente aqui ya es completamente visible la población joven ha empezado a disminuir, por lo que nuestra pirámide se rectangularizó.
 
-En conjunto podemos ver un par de cosas; la población en general disminuyó pasando de tener las edades con poblaciones mayores alrededor de los 150,000 habitantes para 44 años después rondar los 120,000 habitantes. Por otro lado podemos ver que al pasar los años la población de hombres baja significativamente en comparación a la de mujeres, a pesar de que en edades jóvenes la población de hombres es mayor.
+En conjunto podemos ver un par de cosas; la población en general disminuyo pasando de tener las edades con poblaciones mayores al rededor de los 150,000 habitantes para 44 años después rondar los 120,000 habitantes. Por otro lado podemos ver que al pasar los años la población de hombres baja significativamente en comparación a la de mujeres, a pesar de que en edades jóvenes la población de hombres es mayor.
 
 ## Metodología a seguir
 
@@ -117,7 +117,7 @@ Para la creación de las tablas de vida usaremos como base el siguiente diagrama
 
 ## Expresiones matemáticas
 
-Durante el desarrollo de este documento se usaron las siguientes fórmulas para los cálculos necesarios. Asumiremos que las tasas específicas por edad son iguales a las tasas por periodo: $$_nm_x = _nM_x = \frac{_nD_x}{_nK_x}$$ Para edades de 0 a 1 usaremos la relación de Coule y Demeny correspondiente: $$
+Durante el desarrollo de este documento se usaron las siguientes formulas para los calculos necesarios. Asumiremos que las tasas especificas por edad son iguales a las tasas por periodo: $$_nm_x = _nM_x = \frac{_nD_x}{_nK_x}$$ Para edades de 0 a 1 usaremos la relación de Coule y Demeny correspondiente: $$
 a_0 = 
 \begin{cases}
 0,330 & \text{Hombres, } m_0 \geq 0,107 \\
@@ -135,17 +135,17 @@ _4a_1 =
 \end{cases}
 $$ En cualquier otro caso: $$ _na_x = \frac{n}{2}$$ Las probabilidades de muerte estan dadas por:
 
-$$_nq_x = \frac{n \cdot _nm_x}{1+(n-_na_x)\cdot_nm_x}$$ Las probabilidades de supervivencia están dadas por: $$_np_x = 1- _nq_x$$
+$$_nq_x = \frac{n \cdot _nm_x}{1+(n-_na_x)\cdot_nm_x}$$ Las probabilidades de supervivencia estan dadas por: $$_np_x = 1- _nq_x$$
 
-Los supervivientes a edad x están dados por: $$l_{x+n} = l_x \cdot _nq_x$$ Las defunciones están dadas por: $$_nd_x = l_x-l_{x+n}$$ Los Años-Persona-Vividos están dados por: $$_nL_x = (n\cdot l_{x+n})+(_na_x \cdot _nd_x)$$
+Los supervivientes a edad x estan dados por: $$l_{x+n} = l_x \cdot _nq_x$$ Las defunciones estan dadas por: $$_nd_x = l_x-l_{x+n}$$ Los Años-Persona-Vividos estan dados por: $$_nL_x = (n\cdot l_{x+n})+(_na_x \cdot _nd_x)$$
 
-Los Años-Persona-Vividos en $85+$ estan dados por $$_{85+}L_x = \frac{l_x}{_{85+}m_x}$$ El total de Años-Persona-Vividos está dado por: $$T_x = \Sigma _{i = x}^{85+}$$
+Los Años-Persona-Vividos en $85+$ estan dadps por $$_{85+}L_x = \frac{l_x}{_{85+}m_x}$$ El total de Años-Persona-Vividos esta dado por: $$T_x = \Sigma _{i = x}^{85+}$$
 
-La esperanza de vida a edad x está dada por: $$e_x = \frac{T_x}{l_x}$$ La tasa de crecimiento exponencial está dada por: $$ K(t) = e^{Rt} K(0) = \exp(Rt) K(0) $$
-La tasa específica de fecundidad (TEFE) está dada por: $$ {_n f_x} = \frac{{_n B_x^f}}{_n P_x^f}$$ 
-La tasa global de fecundidad (TGF) está dada por: $$\text{TGF} = n \sum_{x=\alpha}^{\beta} {_n f_x^{\text{total}}}$$
-La tasa bruta de reproducción está dada por: $$ \text{TBR} = n \sum_{x=\alpha}^{\beta} {_n f_x^f}$$
-Finalmente la tasa neta de reproducción está dada por: $$ \text{TNR} = n \sum_{x=\alpha}^{\beta} {_n f_x^f} \cdot \frac{_n L_x}{5\cdot l_0} $$
+La esperanza de vida a edad x esta dada por: $$e_x = \frac{T_x}{l_x}$$ La tasa de crecimiento exponencial esta dada por: $$ K(t) = e^{Rt} K(0) = \exp(Rt) K(0) $$
+La tasa especifica de fecundidad (TEFE) esta dada por: $$ {_n f_x} = \frac{{_n B_x^f}}{_n P_x^f}$$ 
+La tasa global de fecundidad (TGF) esta dada por: $$\text{TGF} = n \sum_{x=\alpha}^{\beta} {_n f_x^{\text{total}}}$$
+La tasa bruta de reproducción esta dada por: $$ \text{TBR} = n \sum_{x=\alpha}^{\beta} {_n f_x^f}$$
+Finalmente la tasa neta de reproducción esta dada por: $$ \text{TNR} = n \sum_{x=\alpha}^{\beta} {_n f_x^f} \cdot \frac{_n L_x}{5\cdot l_0} $$
 \newpage
 
 ## Escritura de funciones
@@ -474,9 +474,9 @@ De las tablas anteriores podemos tomar los siguientes datos:
   
 ```
 
-Con los que podemos ver como hubo un impacto a la esperanza de vida en ambos géneros.
+Con los que podemos ver como hubo un impacto a la esperanza de vida en ambos generos.
 
-Por otro lado, en la siguiente gráfica podemos ver el crecimiento poblacional esperado con la tasa de crecimiento que obtenemos de los censos de la década de 2010 y 2020:
+Por otro lado, en la siguiente gráfica podemos ver el crecimiento poblacional esperado con la tasa de crecimiento que obtenemos de los censos de la decada de 2010 y 2020:
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 cre_exp <- expo( K_0=16594825, K_T=17723173, 
@@ -538,7 +538,7 @@ ggplot(edomx21f, aes( x, mx, group = 1 )) +
 
 ```
 
-Después veremos el cambio en la esperanza de vida en cada tabla:
+Despúes veremos el cambio en la esperanza de vida en cada tabla:
 
 ```{r, echo=FALSE, fig.height=2.5, fig.width=8}
 ggplot(edomx10m, aes(x, ex, group = 1)) +
@@ -635,8 +635,8 @@ ggplot(edomx21f, aes(x, dx, group = 1)) +
 
 \newpage
 ## Exclusión de homicidios
-Tomando los datos disponibles correspondientes a las defunciones por homicidios en nuestra entidad de estudio podemos lograr calcular como se comportaría la probabilidad de muerte y la esperanza de vida si eliminamos esta causa de salida de nuestro grupo de estudio. En este trabajo solo se incluyen los resultados, por lo que la metodología no se encuentra en la sección de "Escritura de funciones", sin embargo, en la carpeta "output" del proyecto se adjunta una hoja de cálculo con los calculos correspondientes.\newline
-Las siguientes gráficas nos muestran lo antes mencionado:\newline
+Tomando los datos disponibles correspondientes a las defunciones por homicidios en nuestra entidad de estudio podemos lograr calcular como se comportaria la probabilidad de muerte y la esperanza de vida si eliminamos esta causa de salida de nuestro grupo de estudio. En este trabajo solo se incluyen los resultados, por lo que la metodología no se encuentra en la sección de "Escritura de funciones", sin embargo, en la carpeta "output" del proyecto se adjunta una hoja de cálculo con los calculos correspondientes.\newline
+Las siguientes graficas nos muestran lo antes mencionado:\newline
 ![Mortalidad con homicios eliminados para hombres](data/CE_M.png)
 Aqui podemos ver como la probabilidad de muerte en hombres cuando carecemos de homicidios baja visiblemente desde los 5 años hasta los 45 años, teniendo el mayor impacto alrededor de los 20 años. Por lo que podemos notar que los homicidios a la población de hombres del Estado de México afectan principalmente a aquellos que se encuentran en la adolescencia y adultez.
 ![Mortalidad con homicios eliminados para mujeres](data/CE_F.png)
@@ -644,15 +644,15 @@ En esta otra gráfica podemos observar como la probabilidad de muerte en mujeres
 
 
 ![Comparativa de esperanza de vidas](data/CE_e.png)
-En esta última gráfica tenemos una comparativa del impacto en las esperanzas de vida al nacer de grupos de estudio en los que hay homicidios y en los que no hay homicidios, tanto para hombres como para mujeres: \begin{itemize}
+En esta última gráfica tenemos una comparativa del impacto en las esperanzas de vida al nacer de grupos de estudio en los que hay homicidiosn y en los que no hay homicidios, tanto para hombres como para mujeres: \begin{itemize}
 \item En el caso de la población masculina podemos ver un aumento notable de 5.2 meses en la esperanza de vida al eliminar los homicidios de las causas de muerte. 
-\item En el caso de la población femenina podemos ver un aumento importante de 2.4 meses en la esperanza de vida al eliminar los homicidios de las causas de muerte.
+\item En el caso de la población femenina podemos ver un importante de 2.4 meses en la esperanza de vida al eliminar los homicidios de las causas de muerte.
 \end{itemize}
 Por tanto podemos concluir que los homicidios en el Estado de México no son un tema menor en la población en general. Es un motivo que afecta directamente en las edades de formación personal y desarrollo de plenitud de un individuo, por lo que por más que de primeras en la esperanza de vida no suene a un impacto tan grande, es un tema que se le debe prestar especial atención si se quiere mejorar la calidad de vida en la entidad.
 \newpage
 
-## Tasa de reemplazo 
-La tasa de reemplazo es el nivel de fecundidad necesario para que una población se reemplace a sí misma a largo plazo, sin migración. Únicamente en esta parte del trabajo usaremos la notación en inglés de las tasas porque en la literatura es como comúnmente se encuentran. \newline
+## Tasa de remplazo 
+La tasa de reemplazo es el nivel de fecundidad necesario para que una población se reemplace a sí misma a largo plazo, sin migración. Únicamente en esta parte del trabajo usaremos la notación en ingles de las tasas porque en la literatura es como comúnmente se encuentran. \newline
 En una población cerrada (sin migración), el reemplazo generacional se define mediante la \textbf{Tasa Neta de Reproducción (Net Reproduction Rate, NRR)}. La NRR representa el número promedio de hijas que una mujer tendría si estuviera expuesta a las tasas de fecundidad y mortalidad por edad de un año dado. \newline
 \begin{equation}
     \text{NRR} = R_0 = \sum_{x=\alpha}^{\beta} f_x \cdot s_x
@@ -828,14 +828,14 @@ En 2019, la TNR de 0.714 es alarmantemente baja: por cada generación de mujeres
 \newpage
 
 ## Comparativo de TEFE
-Casi para concluir compararemos las TEFE de el Estado de México, de los Estados Unidos Mexicanos y de la República Federativa de Brasil para el año de 2019. La siguiente gráfica las muestra simultáneas:
+Casi para concluir compararemos las TEFE de el Estado de México, de los Estados Unidos Mexicanos y de la República Federativa de Brasil para el año de 2019. La siguiente gráfica las muestra simultaneas:
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 
 #Población total ----
 
 fec <- fread(
-  "https://population.un.org/wpp/assets/Excel%20Files/1_Indicator%20(Standard)/CSV_FILES/WPP2024_Fertility_by_Age5.csv.gz")
+  "data/Fertility.csv")
 
 
 fec_Mex <- fec[ LocID==484 & Variant=="Medium" & Time == 2019]
@@ -843,7 +843,7 @@ fec_Bra <- fec[ LocID==76 & Variant=="Medium" & Time == 2019]
 
 
 pop <- fread(
-  "https://population.un.org/wpp/assets/Excel%20Files/1_Indicator%20(Standard)/CSV_FILES/WPP2024_PopulationByAge5GroupSex_Medium.csv.gz")
+  "data/Population.csv")
 
 pop_Mex <- pop[ LocID==484 & Variant=="Medium" & Time == 2019]
 pop_Bra <- pop[ LocID==76 & Variant=="Medium" & Time == 2019]
@@ -903,10 +903,10 @@ A partir de los 35 años las tres curvas convergen y se vuelven prácticamente i
 
 ## Análisis final
 
-A pesar de parecer que tenemos un sesgo en los datos de defunciones de todos los años; que se podría tratar de evitar tomando un enfoque de uso de datos únicamente provenientes de CONAPO. Los resultados permiten extraer tres conclusiones centrales:
+A pesar de parecer que tenemos un sesgo en los datos de defunciones de todos los años; que se podria tratar de evitar tomando un enfoque de uso de datos únicamente provenientes de CONAPO. Los resultados permiten extraer tres conclusiones centrales:
 
 \begin{itemize}
-\item La reducción de mortalidad infantil y el avance de la esperanza de vida entre 2010 y 2019 son evidentes, aunque la clara supremacía de la mortalidad masculina en edades jóvenes no permitío un avance mayor.
+\item La reducción de mortalidad infantil y el avance de la esperanza de vida entre 2010 y 2019 son evidentes, aunque la clara supremacia de la mortalidad masculina en edades jóvenes no permitio un avance mayor.
 \item La caída de casi 8 años en la esperanza de vida masculina en un solo año no tiene comparación en la serie analizada. Las características del Edomex mencionadas; densidad extrema, dependencia económica de la CDMX, alta concentración de trabajadores esenciales en zonas conurbadas; probablemente amplificaron el impacto por encima de lo observado en entidades menos urbanizadas.
 \item La mayor letalidad del COVID-19 en hombres, combinada con su mayor exposición laboral y una sabida menor tendencia de asistir a consultas médicas preventivas, produjo la brecha histórica de 7.67 años en 2021, subrayando la necesidad de incorporar perspectivas diferenciadas por sexo en la planificación de emergencias sanitarias futuras.
 \end{itemize}
